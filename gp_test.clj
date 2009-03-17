@@ -1,3 +1,6 @@
-(ns test.gp)
+(ns test.gp (:use fact.core fact.output.color))
 
-(prn "hit")
+(fact "testing" []
+  (= 3 (+ 1 2)))
+
+(print-results "gp" (verify-facts 'test.gp))
