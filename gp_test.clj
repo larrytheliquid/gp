@@ -9,6 +9,36 @@
 	 (p 'nand (p true) (p true)))}]
   (= tree (initialize ['nand] [true] height)))
 
+(fact "count-nodes: number of nodes in tree" 
+  [[tree result]
+   {(p true) 1
+    (p 'not (p true) ) 2
+    (p 'and (p true) (p true)) 3
+    (p 'and
+       (p 'and (p true) (p true))
+       (p 'and (p true) (p true))) 7
+    (p 'and 
+       (p 'and (p true) (p true))
+       (p 'and 
+	  (p 'not (p true)) 
+	  (p true))) 8}]
+  (= result (count-nodes tree)))
+
+(fact "height: height of the longest branch" 
+  [[tree result]
+   {(p true) 0
+    (p 'and (p true) (p true)) 1
+    (p 'not (p true) ) 1
+    (p 'and
+       (p 'and (p true) (p true))
+       (p 'and (p true) (p true))) 2
+    (p 'and 
+       (p 'and (p true) (p true))
+       (p 'and 
+	  (p 'not (p true)) 
+	  (p true))) 3}]
+  (= result (height tree)))
+
 (fact "to-sexp: sexp from tree" 
   [[tree sexp]
    {(p true) true

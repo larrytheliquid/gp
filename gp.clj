@@ -13,6 +13,18 @@
        (initialize functions terminals (dec height))
        (initialize functions terminals (dec height)))))
 
+(defn count-nodes [tree]
+  (if-let [children (:children tree)]
+    (apply + 1
+	   (map #(count-nodes %) children))
+    1))
+
+(defn height [tree]
+  (if-let [children (:children tree)]
+    (apply max 
+	   (map #(inc (height %)) children))
+    0))
+
 (defn to-sexp [tree]
   (if-let [children (:children tree)]
     (apply list (:value tree)
