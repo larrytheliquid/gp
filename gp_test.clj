@@ -1,6 +1,6 @@
 (ns test.gp (:use gp fact.core fact.output.verbose))
 
-(fact "initialize: full tree of specified height" 
+(fact "initialize returns full tree of specified height" 
   [[height tree]
    {0 (p true)
     1 (p 'nand (p true) (p true))
@@ -9,7 +9,7 @@
 	 (p 'nand (p true) (p true)))}]
   (= tree (initialize ['nand] [true] height)))
 
-(fact "count-nodes: number of nodes in tree" 
+(fact "count-nodes returns number of nodes in tree" 
   [[tree result]
    {(p true) 1
     (p 'not (p true) ) 2
@@ -24,7 +24,7 @@
 	  (p true))) 8}]
   (= result (count-nodes tree)))
 
-(fact "height: height of the longest branch" 
+(fact "height returns height of the longest branch" 
   [[tree result]
    {(p true) 0
     (p 'and (p true) (p true)) 1
@@ -39,7 +39,7 @@
 	  (p true))) 3}]
   (= result (height tree)))
 
-(fact "to-sexp: sexp from tree" 
+(fact "to-sexp returns sexp from tree" 
   [[tree sexp]
    {(p true) true
     (p false) false
@@ -50,7 +50,7 @@
     (p 'or (p false) (p 'and (p false) (p true))) '(or false (and false true))}]
   (= sexp (to-sexp tree)))
 
-(fact "to-fn: function from tree sexp" 
+(fact "to-fn returns function from tree sexp" 
   [[tree returned]
    {(p true) true
     (p false) false
@@ -61,4 +61,4 @@
     (p 'or (p false) (p 'and (p false) (p true))) false}]
   (= returned (apply (to-fn tree))))
 
-(print-results "gp:" (verify-facts 'test.gp))
+(print-results "gp" (verify-facts 'test.gp))
