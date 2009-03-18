@@ -12,3 +12,12 @@
     (p (rand-elem functions) 
        (initialize functions terminals (dec height))
        (initialize functions terminals (dec height)))))
+
+(defn to-sexp [tree]
+  (if-let [children (:children tree)]
+    (apply list (:value tree)
+	   (map #(to-sexp %) children))
+    (:value tree)))
+
+(defn to-fn [tree]
+  (eval `(fn [] ~(to-sexp tree))))
