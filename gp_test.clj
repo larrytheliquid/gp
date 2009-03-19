@@ -39,6 +39,25 @@
 	  (p true))) 3}]
   (= result (height tree)))
 
+(fact "nth-node returns node at given point according to depth-first traversal"
+  [[[tree n] result] 
+   {[(p true) 0] (p true)
+    [(p false) 0] (p false)
+    [(p 'and (p true) (p false)) 1] (p true)
+    [(p 'and (p true) (p false)) 2] (p false)
+    [(p 'and 
+	(p 'not (p true))
+	(p 'or (p false) (p 'not (p false)))) 2] (p true)
+    [(p 'and 
+	(p 'not (p true))
+	(p 'or (p false) (p 'not (p false)))) 5] (p 'not (p false))
+    [(p 'and
+	(p 'not (p 'not (p 'not (p true))))
+	(p 'or (p 'or (p false) (p false)) (p 'not (p false)))) 8] (p false)}]
+  (= result (nth-node n tree)))
+
+(fact "replace-node returns tree with node at given point replaced according to depth-first traversal")
+
 (fact "to-sexp returns sexp from tree" 
   [[tree sexp]
    {(p true) true

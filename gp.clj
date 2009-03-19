@@ -25,6 +25,17 @@
 	   (map #(inc (height %)) children))
     0))
 
+(defn nth-node
+  ([n tree] (nth-node n 0 tree))
+  ([target index tree]
+     (if (= target index) tree
+       (if-let [children (:children tree)] 
+	 (reduce #(if (integer? %1)
+		    (nth-node target (inc %1) %2)
+		     %1)
+		 index children)
+	 index))))
+
 (defn to-sexp [tree]
   (if-let [children (:children tree)]
     (apply list (:value tree)
