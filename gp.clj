@@ -1,11 +1,14 @@
 (ns gp)
+(require '[clojure.zip :as zip])
 ;;; TODO: Height limit for crossover
 
 (defn- rand-elem [coll]
   (nth coll (rand-int (count coll))))
 
-(defn p [value & children]
-  (apply list value children))
+(defn p 
+  ([value] value)
+  ([value & children]
+     (apply list value children)))
 
 (defn initialize [functions terminals height]
   (if (= 0 height)
@@ -15,13 +18,13 @@
        (initialize functions terminals (dec height)))))
 
 (defn count-nodes [tree]
-  (if-let [children (next tree)]
+  (if-let [children (and (list? tree) (next tree))]
     (apply + 1
 	   (map #(count-nodes %) children))
     1))
 
 (defn height [tree]
-  (if-let [children (next tree)]
+  (if-let [children (and (list? tree) (next tree))]
     (apply max 
 	   (map #(inc (height %)) children))
     0))
@@ -31,12 +34,24 @@
   ([target index tree]
      (if (= target index) 
        tree
-       (if-let [children (next tree)] 
+       (if-let [children (and (list? tree) (next tree))] 
 	 (reduce #(if (integer? %1)
 		    (nth-node target (inc %1) %2)
 		     %1)
 		 index children)
 	 index))))
+
+;;; get and set node... private nth-loc
+
+;; (defn nth-node [n tree]
+;;   (loop [distance n
+;; 	 zipper (zip/seq-zip tree)]
+;;     (if (= 0 distance)
+;;       (zip/node zipper)
+;;       (recur (if (zip/branch? zipper)
+;; 	       (dec distance)
+;; 	       distance)
+;; 	     (zip/next zipper)))))
 
 (defn replace-node
   ([n replacement tree] (replace-node n 0 replacement tree))
@@ -51,11 +66,5 @@
 		     children))
 	 tree))))
 
-(defn to-sexp [tree]
-  (if-let [children (next tree)]
-    (apply list (first tree)
-	   (map #(to-sexp %) children))
-    (first tree)))
-
 (defn to-fn [tree]
-  (eval `(fn [] ~(to-sexp tree))))
+  (eval `(fn [] ~tree)))

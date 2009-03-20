@@ -56,44 +56,33 @@
 	(p 'or (p 'or (p false) (p false)) (p 'not (p false)))) 8] (p false)}]
   (= result (nth-node n tree)))
 
-(fact "replace-node returns tree with node at given point replaced according to depth-first traversal"
-  [[[tree n replacement] result]
-   {[(p true) 0 (p false)] (p false)
-    [(p false) 0 (p true)] (p true)
-    [(p 'and (p true) (p false)) 1 (p false)] (p 'and (p false) (p false))
-    [(p 'and (p true) (p false)) 2 (p true)] (p 'and (p true) (p true))
-    [(p 'and 
-	(p 'not (p true))
-	(p 'or (p false) (p 'not (p false)))) 2 (p false)]
-    (p 'and 
-       (p 'not (p false))
-       (p 'or (p false) (p 'not (p false))))
+;; (fact "replace-node returns tree with node at given point replaced according to depth-first traversal"
+;;   [[[tree n replacement] result]
+;;    {[(p true) 0 (p false)] (p false)
+;;     [(p false) 0 (p true)] (p true)
+;;     [(p 'and (p true) (p false)) 1 (p false)] (p 'and (p false) (p false))
+;;     [(p 'and (p true) (p false)) 2 (p true)] (p 'and (p true) (p true))
 ;;     [(p 'and 
 ;; 	(p 'not (p true))
-;; 	(p 'or (p false) (p 'not (p false)))) 5 (p false)]
+;; 	(p 'or (p false) (p 'not (p false)))) 2 (p false)]
 ;;     (p 'and 
-;;        (p false)
+;;        (p 'not (p false))
 ;;        (p 'or (p false) (p 'not (p false))))
-;;     [(p 'and
-;; 	(p 'not (p 'not (p 'not (p true))))
-;; 	(p 'or (p 'or (p false) (p false)) (p 'not (p false)))) 8 (p true)]
-;;     (p 'and
-;;        (p 'not (p 'not (p 'not (p true))))
-;;        (p 'or (p 'or (p false) (p true)) (p 'not (p false))))
-    }]
-(prn (replace-node n replacement tree))
-  (= result (replace-node n replacement tree)))
-
-(fact "to-sexp returns sexp from tree" 
-  [[tree sexp]
-   {(p true) true
-    (p false) false
-    (p 'and (p true) (p true)) '(and true true)
-    (p 'and (p true) (p false)) '(and true false)
-    (p 'or (p true) (p false)) '(or true false)
-    (p 'or (p false) (p 'and (p true) (p true))) '(or false (and true true))
-    (p 'or (p false) (p 'and (p false) (p true))) '(or false (and false true))}]
-  (= sexp (to-sexp tree)))
+;; ;;     [(p 'and 
+;; ;; 	(p 'not (p true))
+;; ;; 	(p 'or (p false) (p 'not (p false)))) 5 (p false)]
+;; ;;     (p 'and 
+;; ;;        (p false)
+;; ;;        (p 'or (p false) (p 'not (p false))))
+;; ;;     [(p 'and
+;; ;; 	(p 'not (p 'not (p 'not (p true))))
+;; ;; 	(p 'or (p 'or (p false) (p false)) (p 'not (p false)))) 8 (p true)]
+;; ;;     (p 'and
+;; ;;        (p 'not (p 'not (p 'not (p true))))
+;; ;;        (p 'or (p 'or (p false) (p true)) (p 'not (p false))))
+;;     }]
+;; (prn (replace-node n replacement tree))
+;;   (= result (replace-node n replacement tree)))
 
 (fact "to-fn returns function from tree sexp" 
   [[tree returned]
