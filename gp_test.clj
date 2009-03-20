@@ -66,6 +66,17 @@
 	  (or (or false true) (not false)))}]
   (= result (set-node n replacement tree)))
 
+(fact "crossover returns one part of a program inserted into a random location of another" 
+  [result (repeatedly #(crossover '(and true true) '(or false false)))]
+  (let [permutations 
+	[false
+	 '(and true false)
+	 '(and false true)
+	 '(or false false)
+	 '(and true (or false false))
+	 '(and (or false false) true)]]
+    (some #(= % result) permutations)))
+
 (fact "to-fn returns function from tree sexp" 
   [[tree returned]
    {true true
