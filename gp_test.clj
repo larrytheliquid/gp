@@ -32,7 +32,7 @@
 	       true)) 3}]
   (= result (height tree)))
 
-(fact "nth-node returns node at given point according to depth-first traversal"
+(fact "get-node returns node at given point according to depth-first traversal"
   [[[tree n] result] 
    {[true 0] true
     [false 0] false
@@ -45,35 +45,28 @@
     ['(and
        (not (not (not true)))
        (or (or false false) (not false))) 8] false}]
-  (= result (nth-node n tree)))
+  (= result (get-node n tree)))
 
-;; (fact "replace-node returns tree with node at given point replaced according to depth-first traversal"
+;; (fact "set-node returns tree with node at given point replaced according to depth-first traversal"
 ;;   [[[tree n replacement] result]
 ;;    {[true 0 false] false
 ;;     [false 0 true] true
-;;     [(p 'and true false) 1 false] (p 'and false false)
-;;     [(p 'and true false) 2 true] (p 'and true true)
-;;     [(p 'and 
-;; 	(p 'not true)
-;; 	(p 'or false (p 'not false))) 2 false]
-;;     (p 'and 
-;;        (p 'not false)
-;;        (p 'or false (p 'not false)))
-;; ;;     [(p 'and 
-;; ;; 	(p 'not true)
-;; ;; 	(p 'or false (p 'not false))) 5 false]
-;; ;;     (p 'and 
-;; ;;        false
-;; ;;        (p 'or false (p 'not false)))
-;; ;;     [(p 'and
-;; ;; 	(p 'not (p 'not (p 'not true)))
-;; ;; 	(p 'or (p 'or false false) (p 'not false))) 8 true]
-;; ;;     (p 'and
-;; ;;        (p 'not (p 'not (p 'not true)))
-;; ;;        (p 'or (p 'or false true) (p 'not false)))
+;;     ['(and true false) 1 false] '(and false false)
+;;     ['(and true false) 2 true] '(and true true)
+;; ;;;     ['(and (not true)
+;; ;;; 	   (or false (not false))) 2 false]
+;; ;;;     '(and (not false)
+;; ;;; 	  (or false (not false)))
+;; ;;;     ['(and (not true)
+;; ;;; 	   (or false (not false))) 5 false]
+;; ;;;     '(and false (or false (not false)))
+;; ;;;     ['(and (not (not (not true)))
+;; ;;; 	   (or (or false false) (not false))) 8 true]
+;; ;;;     '(and (not (not (not true)))
+;; ;;; 	  (or (or false true) (not false)))
 ;;     }]
-;; (prn (replace-node n replacement tree))
-;;   (= result (replace-node n replacement tree)))
+;; (prn (set-node n replacement tree))
+;;   (= result (set-node n replacement tree)))
 
 (fact "to-fn returns function from tree sexp" 
   [[tree returned]
