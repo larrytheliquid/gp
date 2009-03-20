@@ -1,0 +1,6 @@
+TODO: Height limit for crossover
+TODO: Memoization
+TODO: pmap across a population during generation
+TODO: Lazily initialized trees/programs
+TODO: Look for tail recursion
+TODO: Look for typing methods

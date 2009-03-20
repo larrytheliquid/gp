@@ -1,19 +1,12 @@
-(ns gp)
-(require '[clojure.zip :as zip])
-;;; TODO: Height limit for crossover
+(ns gp (:require [clojure.zip :as zip]))
 
 (defn- rand-elem [coll]
   (nth coll (rand-int (count coll))))
 
-(defn p 
-  ([value] value)
-  ([value & children]
-     (apply list value children)))
-
 (defn initialize [functions terminals height]
   (if (= 0 height)
-    (p (rand-elem terminals))
-    (p (rand-elem functions) 
+    (rand-elem terminals)
+    (list (rand-elem functions) 
        (initialize functions terminals (dec height))
        (initialize functions terminals (dec height)))))
 
