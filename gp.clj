@@ -4,9 +4,8 @@
 (defn- rand-elem [coll]
   (nth coll (rand-int (count coll))))
 
-(defstruct program :value :children)
 (defn p [value & children]
-  (struct program value children))
+  (apply list value children))
 
 (defn initialize [functions terminals height]
   (if (= 0 height)
@@ -16,13 +15,13 @@
        (initialize functions terminals (dec height)))))
 
 (defn count-nodes [tree]
-  (if-let [children (:children tree)]
+  (if-let [children (next tree)]
     (apply + 1
 	   (map #(count-nodes %) children))
     1))
 
 (defn height [tree]
-  (if-let [children (:children tree)]
+  (if-let [children (next tree)]
     (apply max 
 	   (map #(inc (height %)) children))
     0))
@@ -32,7 +31,7 @@
   ([target index tree]
      (if (= target index) 
        tree
-       (if-let [children (:children tree)] 
+       (if-let [children (next tree)] 
 	 (reduce #(if (integer? %1)
 		    (nth-node target (inc %1) %2)
 		     %1)
@@ -44,8 +43,8 @@
   ([target index replacement tree]
      (if (= target index)
        replacement
-       (if-let [children (:children tree)]
-	 (apply p (:value tree)
+       (if-let [children (next tree)]
+	 (apply p (next tree)
 		(map #(replace-node 
 		       target (inc index)
 		       replacement %)
@@ -53,10 +52,10 @@
 	 tree))))
 
 (defn to-sexp [tree]
-  (if-let [children (:children tree)]
-    (apply list (:value tree)
+  (if-let [children (next tree)]
+    (apply list (first tree)
 	   (map #(to-sexp %) children))
-    (:value tree)))
+    (first tree)))
 
 (defn to-fn [tree]
   (eval `(fn [] ~(to-sexp tree))))
