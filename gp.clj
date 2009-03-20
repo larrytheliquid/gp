@@ -27,19 +27,6 @@
 	   (map #(inc (height %)) children))
     0))
 
-;; (defn replace-node
-;;   ([n replacement tree] (replace-node n 0 replacement tree))
-;;   ([target index replacement tree]
-;;      (if (= target index)
-;;        replacement
-;;        (if-let [children (:children tree)]
-;; 	 (apply p (:value tree)
-;; 		(map #(replace-node 
-;; 		       target (inc index)
-;; 		       replacement %)
-;; 		     children))
-;; 	 tree))))
-
 (defn nth-node
   ([n tree] (nth-node n 0 tree))
   ([target index tree]
@@ -52,20 +39,6 @@
 		 index children)
 	 index))))
 
-;; (defn replace-node
-;;   ([n replacement tree] (first (replace-node n 0 replacement tree)))
-;;   ([target index replacement tree]
-;;      (if (= target index)
-;;        [replacement index]
-;;        (if-let [children (:children tree)]
-;; 	 (apply p (:value tree)
-;; 	   (first (reduce
-;; 	     (fn [[acc i] child]
-;; 	       (conj acc (replace-node target (inc i) replacement child)))
-;; 	     [(vector) index] children)))
-;; 	 [tree index]))))
-
-;;; TODO: rename to set-node
 (defn replace-node
   ([n replacement tree] (replace-node n 0 replacement tree))
   ([target index replacement tree]
@@ -73,11 +46,10 @@
        replacement
        (if-let [children (:children tree)]
 	 (apply p (:value tree)
-	   (first (reduce
-	     (fn [[acc i] child]
-	       [(conj acc (replace-node target (inc i) replacement child))
-		(inc i)])
-	     [(vector) index] children)))
+		(map #(replace-node 
+		       target (inc index)
+		       replacement %)
+		     children))
 	 tree))))
 
 (defn to-sexp [tree]
