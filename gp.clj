@@ -22,28 +22,22 @@
 	   (map #(inc (height %)) children))
     0))
 
-(defn get-node [n tree]
+(defn- nth-zipper [n tree f]
   (loop [distance n
 	 zipper (zip/seq-zip tree)]
     (if (= 0 distance)
-      (zip/node zipper)
+      (f zipper)
       (recur (if (zip/branch? zipper) 
 	       distance
 	       (dec distance))
 	     (zip/next zipper)))))
 
-(defn set-node
-  ([n replacement tree] (set-node n 0 replacement tree))
-  ([target index replacement tree]
-     (if (= target index)
-       replacement
-       (if-let [children (and (list? tree) (next tree))]
-	 (apply list (first tree)
-		(map #(set-node 
-		       target (inc index)
-		       replacement %)
-		     children))
-	 tree))))
+(defn get-node [n tree]
+  (nth-zipper n tree zip/node))
+
+(defn set-node [n replacement tree]
+  (nth-zipper n tree 
+    #(zip/root (zip/replace % replacement))))
 
 (defn to-fn [tree]
   (eval `(fn [] ~tree)))

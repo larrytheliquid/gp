@@ -47,26 +47,24 @@
        (or (or false false) (not false))) 8] false}]
   (= result (get-node n tree)))
 
-;; (fact "set-node returns tree with node at given point replaced according to depth-first traversal"
-;;   [[[tree n replacement] result]
-;;    {[true 0 false] false
-;;     [false 0 true] true
-;;     ['(and true false) 1 false] '(and false false)
-;;     ['(and true false) 2 true] '(and true true)
-;; ;;;     ['(and (not true)
-;; ;;; 	   (or false (not false))) 2 false]
-;; ;;;     '(and (not false)
-;; ;;; 	  (or false (not false)))
-;; ;;;     ['(and (not true)
-;; ;;; 	   (or false (not false))) 5 false]
-;; ;;;     '(and false (or false (not false)))
-;; ;;;     ['(and (not (not (not true)))
-;; ;;; 	   (or (or false false) (not false))) 8 true]
-;; ;;;     '(and (not (not (not true)))
-;; ;;; 	  (or (or false true) (not false)))
-;;     }]
-;; (prn (set-node n replacement tree))
-;;   (= result (set-node n replacement tree)))
+(fact "set-node returns tree with node at given point replaced according to depth-first traversal"
+  [[[tree n replacement] result]
+   {[true 0 false] false
+    [false 0 true] true
+    ['(and true false) 1 false] '(and false false)
+    ['(and true false) 2 true] '(and true true)
+    ['(and (not true)
+	   (or false (not false))) 2 false]
+    '(and (not false)
+	  (or false (not false)))
+    ['(and (not true)
+	   (or false (not false))) 5 false]
+    '(and (not true) (or false false))
+    ['(and (not (not (not true)))
+	   (or (or false false) (not false))) 8 true]
+    '(and (not (not (not true)))
+	  (or (or false true) (not false)))}]
+  (= result (set-node n replacement tree)))
 
 (fact "to-fn returns function from tree sexp" 
   [[tree returned]
