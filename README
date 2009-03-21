@@ -1,9 +1,9 @@
 The source code for the GP algorithm is currently less than 100 lines of code, so feel free to browse through it in the gp.clj file. 
 
 Run the tests to make sure everything is functioning on your system. After the tests run you should see output indicating "0 failed" and "0 exceptions". The source code for the tests is in gp_test.clj, run the tests as follows:
-    java -sever -cp deps/clojure.jar:deps/fact.jar:. clojure.lang.Script gp_test.clj
+    java -server -cp deps/clojure.jar:deps/fact.jar:. clojure.main gp_test.clj
 
 ***Note that the GP may take a second to start up. This is because it is being interpreted, rather than compiled, to make editing easier during development.***
 
 "Max" is a common GP example problem, similar to one-max in GAs. The 2 functions are addition and multiplication, and the 1 terminal is 0.5. The source code for max is in max_example.clj, run it as follows:
-    java -server -cp deps/clojure.jar:. clojure.lang.Script max_example.clj
+    java -server -cp deps/clojure.jar:. clojure.main max_example.clj

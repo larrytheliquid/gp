@@ -105,7 +105,7 @@
 (fact "evolve returns an induced function that satisfies a fitness measure" []
   (= '(+ (+ (+ 1 1) (+ 1 1)) 
 	 (+ (+ 1 1) (+ 1 1)))
-     (evolve {:generations 20 :population-size 10 :max-height 3 
+     (evolve {:generations 20 :population-size 30 :max-height 3 
 	      :fitness apply :termination #(= (%) 8) 
 	      :functions ['+] :terminals [1 0]})))
 
