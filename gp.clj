@@ -72,17 +72,18 @@
 
 (defn evolve [{:keys [generations population-size max-height
 		      fitness termination
-		      functions terminals]}]
+		      functions terminals] :as options}]
   (loop [generation 0 
-	 best (initialize functions terminals max-height)
 	 population (replicate-fn population-size
-                      #(initialize functions terminals max-height))]
-      (if (or (termination (to-fn best)) 
-	      (= generation generations))
-	best
-	(recur (inc generation)
-	       (fittest fitness (conj population best))
-	       (map (fn [_] (crossover max-height
-		              (select fitness population)
-			      (select fitness population)))
-		    population)))))
+                      #(initialize functions terminals max-height))
+	 best (fittest fitness population)]
+    (when-let [o (:output options)] (o generation best population))
+    (if (or (termination (to-fn best)) 
+	    (= generation generations))
+      best
+      (recur (inc generation)	     
+	     (map (fn [_] (crossover max-height
+		            (select fitness population)
+			    (select fitness population)))
+		  population)
+	     (fittest fitness (conj population best))))))
