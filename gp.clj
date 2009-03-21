@@ -54,7 +54,8 @@
       child)))
 
 (defn to-fn [tree]
-  (eval `(fn [] ~tree)))
+  (eval `(memoize (fn [] ~tree))))
+(def to-fn (memoize to-fn))
 
 (defn- fitter [fitness x y]
   (if (> (fitness (to-fn x)) 
@@ -80,10 +81,10 @@
     (when-let [o (:output options)] (o generation best population))
     (if (or (termination (to-fn best)) 
 	    (= generation generations))
-      best
+      (do (shutdown-agents) best)
       (recur (inc generation)	     
-	     (map (fn [_] (crossover max-height
-		            (select fitness population)
-			    (select fitness population)))
-		  population)
+	     (pmap (fn [_] (crossover max-height
+		             (select fitness population)
+			     (select fitness population)))
+		   population)
 	     (fittest fitness (conj population best))))))

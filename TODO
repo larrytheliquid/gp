@@ -1,8 +1,4 @@
 TODO: initialize needs to take arity into account (make this :params with default empty)
-TODO: Memoization
-TODO: pmap across a population during generation
 TODO: to-fn that accepts function arguments
-TODO: Lazily initialized trees/programs
+TODO: pmap across a population during generation
 TODO: Compile
-TODO: Look for tail recursion
-TODO: Look for typing methods
