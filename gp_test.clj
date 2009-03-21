@@ -67,7 +67,7 @@
   (= result (set-node n replacement tree)))
 
 (fact "crossover returns one part of a program inserted into a random location of another" 
-  [result (repeatedly #(crossover '(and true true) '(or false false)))]
+  [result (repeatedly #(crossover 1337 '(and true true) '(or false false)))]
   (let [permutations 
 	[false
 	 '(and true false)
@@ -75,6 +75,11 @@
 	 '(or false false)
 	 '(and true (or false false))
 	 '(and (or false false) true)]]
+    (some #(= % result) permutations)))
+
+(fact "crossover returns male individual if result is greater than max height" 
+  [result (repeatedly #(crossover 0 true '(or false false)))]
+  (let [permutations [false true]]
     (some #(= % result) permutations)))
 
 (fact "to-fn returns function from tree sexp" 

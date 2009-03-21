@@ -1,5 +1,3 @@
-TODO: crossover needs to work with non-list individuals
-TODO: Height limit for crossover
 TODO: Memoization
 TODO: pmap across a population during generation
 TODO: to-fn that accepts function arguments

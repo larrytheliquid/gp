@@ -39,11 +39,16 @@
   (nth-zipper n tree 
     #(zip/root (zip/replace % replacement))))
 
-(defn crossover [male female]
-  (set-node (rand-int (count-nodes male))
-	    (get-node (rand-int (count-nodes female))
-		      female)
-	    male))
+(defn crossover [max-height male female]
+  (let [child
+	(set-node 
+	 (rand-int (count-nodes male))
+	 (get-node (rand-int (count-nodes female))
+		   female)
+	 male)]
+    (if (> (height child) max-height)
+      male
+      child)))
 
 (defn to-fn [tree]
   (eval `(fn [] ~tree)))
