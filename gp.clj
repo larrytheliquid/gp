@@ -14,13 +14,13 @@
        (initialize functions terminals (dec height)))))
 
 (defn count-nodes [tree]
-  (if-let [children (and (list? tree) (next tree))]
+  (if-let [children (and (seq? tree) (next tree))]
     (apply + 1
 	   (map #(count-nodes %) children))
     1))
 
 (defn height [tree]
-  (if-let [children (and (list? tree) (next tree))]
+  (if-let [children (and (seq? tree) (next tree))]
     (apply max 
 	   (map #(inc (height %)) children))
     0))
@@ -56,27 +56,33 @@
 (defn to-fn [tree]
   (eval `(fn [] ~tree)))
 
+(defn- fitter [fitness x y]
+  (if (> (fitness (to-fn x)) 
+	 (fitness (to-fn y))) 
+    x y))
+
 (defn select [fitness individuals]
-  (let [a (rand-elem individuals)
-	b (rand-elem individuals)]
-    (if (> (fitness (to-fn a)) 
-	   (fitness (to-fn b))) 
-      a b)))
+  (let [x (rand-elem individuals)
+	y (rand-elem individuals)]
+    (fitter fitness x y)))
+
+(defn fittest [fitness individuals]
+  (reduce #(fitter fitness %1 %2) 
+	  individuals))
 
 (defn evolve [{:keys [generations population-size max-height
 		      fitness termination
 		      functions terminals]}]
   (loop [generation 0 
-	 best nil
+	 best (initialize functions terminals max-height)
 	 population (replicate-fn population-size
                       #(initialize functions terminals max-height))]
-      (prn population)
-      (if (= generation generations)
+      (if (or (termination (to-fn best)) 
+	      (= generation generations))
 	best
 	(recur (inc generation)
-	       nil
-	       (map (fn [_] 
-		      (crossover max-height
-		        (select fitness population)
-			(select fitness population)))
+	       (fittest fitness (conj population best))
+	       (map (fn [_] (crossover max-height
+		              (select fitness population)
+			      (select fitness population)))
 		    population)))))
