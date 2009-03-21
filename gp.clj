@@ -47,3 +47,10 @@
 
 (defn to-fn [tree]
   (eval `(fn [] ~tree)))
+
+(defn select [fitness individuals]
+  (let [a (rand-elem individuals)
+	b (rand-elem individuals)]
+    (if (> (fitness (to-fn a)) 
+	   (fitness (to-fn b))) 
+      a b)))

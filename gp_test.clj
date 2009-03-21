@@ -88,4 +88,11 @@
     '(or false (and false true)) false}]
   (= returned (apply (to-fn tree))))
 
+(fact "select returns the better of 2 randomly chosen individuals" 
+  [result (repeatedly #(select (fn [individual] (individual))
+			       ['(+ 1) '(+ 1 1) '(+ 1 1 1)]))]
+  result)
+
+(fact "evolve inducing a function to satisfy a fitness measure")
+
 (print-results "gp" (verify-facts 'test.gp))

@@ -1,6 +1,9 @@
+TODO: crossover needs to work with non-list individuals
 TODO: Height limit for crossover
 TODO: Memoization
 TODO: pmap across a population during generation
+TODO: to-fn that accepts function arguments
 TODO: Lazily initialized trees/programs
+TODO: Compile
 TODO: Look for tail recursion
 TODO: Look for typing methods
