@@ -3,6 +3,9 @@
 (defn- rand-elem [coll]
   (nth coll (rand-int (count coll))))
 
+(defn- replicate-fn [n f]
+  (take n (repeatedly f)))
+
 (defn initialize [functions terminals height]
   (if (= 0 height)
     (rand-elem terminals)
@@ -59,3 +62,21 @@
     (if (> (fitness (to-fn a)) 
 	   (fitness (to-fn b))) 
       a b)))
+
+(defn evolve [{:keys [generations population-size max-height
+		      fitness termination
+		      functions terminals]}]
+  (loop [generation 0 
+	 best nil
+	 population (replicate-fn population-size
+                      #(initialize functions terminals max-height))]
+      (prn population)
+      (if (= generation generations)
+	best
+	(recur (inc generation)
+	       nil
+	       (map (fn [_] 
+		      (crossover max-height
+		        (select fitness population)
+			(select fitness population)))
+		    population)))))

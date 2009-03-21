@@ -94,10 +94,15 @@
   (= returned (apply (to-fn tree))))
 
 (fact "select returns the better of 2 randomly chosen individuals" 
-  [result (repeatedly #(select (fn [individual] (individual))
-			       ['(+ 1) '(+ 1 1) '(+ 1 1 1)]))]
+  [result (repeatedly #(select apply
+		        ['(+ 1) '(+ 1 1) '(+ 1 1 1)]))]
   result)
 
-(fact "evolve inducing a function to satisfy a fitness measure")
+(fact "evolve returns an induced function that satisfies a fitness measure" []
+  (= '(+ (+ (+ 1 1) (+ 1 1)) 
+	 (+ (+ 1 1) (+ 1 1)))
+     (evolve {:generations 10 :population-size 10 :max-height 3 
+	      :fitness apply :termination #(= (%) 8) 
+	      :functions ['+] :terminals [1 0]})))
 
 (print-results "gp" (verify-facts 'test.gp))

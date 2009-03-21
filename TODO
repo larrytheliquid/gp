@@ -1,3 +1,4 @@
+TODO: initialize needs to take arity into account
 TODO: Memoization
 TODO: pmap across a population during generation
 TODO: to-fn that accepts function arguments
