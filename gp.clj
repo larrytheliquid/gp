@@ -53,8 +53,9 @@
       male
       child)))
 
-(defn to-fn [tree]
-  (eval `(memoize (fn [] ~tree))))
+(defn to-fn
+  ([tree] (eval `(memoize (fn [] ~tree))))
+  ([args tree] (eval `(memoize (fn [~@args] ~tree)))))
 (def to-fn (memoize to-fn))
 
 (defn- fitter [fitness x y]

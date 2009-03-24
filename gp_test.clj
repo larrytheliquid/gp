@@ -82,7 +82,7 @@
   (let [permutations [false true]]
     (some #(= % result) permutations)))
 
-(fact "to-fn returns function from tree sexp" 
+(fact "to-fn returns function from tree sexp without parameters" 
   [[tree returned]
    {true true
     false false
@@ -91,7 +91,18 @@
     '(or true false) true
     '(or false (and true true)) true
     '(or false (and false true)) false}]
-  (= returned (apply (to-fn tree))))
+  (= returned ((to-fn [] tree))))
+
+(fact "to-fn returns function from tree sexp with parameters" 
+  [[tree returned]
+   {'x true
+    'y false
+    '(and x x) true
+    '(and x y) false
+    '(or x y) true
+    '(or y (and x true)) true
+    '(or false (and y x)) false}]
+  (= returned ((to-fn ['x 'y] tree) true false)))
 
 (fact "select returns the better of 2 randomly chosen individuals" 
   [result (repeatedly #(select apply
@@ -108,5 +119,13 @@
      (evolve {:generations 20 :population-size 30 :max-height 3 
 	      :fitness apply :termination #(= (%) 8) 
 	      :functions ['+] :terminals [1 0]})))
+
+;;; do x^2 + y + 1
+;; (fact "evolve returns an induced function with paramaters that satisfies a fitness measure" []
+;;   (= '(+ (+ (+ 1 1) (+ 1 1)) 
+;; 	 (+ (+ 1 1) (+ 1 1)))
+;;      (evolve {:generations 20 :population-size 30 :max-height 3 
+;; 	      :fitness apply :termination #(= (%) 8) 
+;; 	      :functions ['+] :terminals [1 0]})))
 
 (print-results "gp" (verify-facts 'test.gp))
