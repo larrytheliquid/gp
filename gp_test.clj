@@ -121,12 +121,4 @@
 	      :functions ['+] :parameters []
 	      :terminals [1 0]})))
 
-;;; do x^2 + y + 1
-;; (fact "evolve returns an induced function with paramaters that satisfies a fitness measure" []
-;;   (= '(+ (+ (+ 1 1) (+ 1 1)) 
-;; 	 (+ (+ 1 1) (+ 1 1)))
-;;      (evolve {:generations 20 :population-size 30 :max-height 3 
-;; 	      :fitness apply :termination #(= (%) 8) 
-;; 	      :functions ['+] :terminals [1 0]})))
-
 (print-results "gp" (verify-facts 'test.gp))
