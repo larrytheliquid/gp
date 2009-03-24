@@ -105,20 +105,21 @@
   (= returned ((to-fn ['x 'y] tree) true false)))
 
 (fact "select returns the better of 2 randomly chosen individuals" 
-  [result (repeatedly #(select apply
+  [result (repeatedly #(select apply []
 		        ['(+ 1) '(+ 1 1 1) '(+ 1 1)]))]
   result)
 
 (fact "fittest returns individual with highest fitness" []
   (= '(+ 1 1 1)
-     (fittest apply ['(+ 1) '(+ 1 1 1) '(+ 1 1)])))
+     (fittest apply [] ['(+ 1) '(+ 1 1 1) '(+ 1 1)])))
 
 (fact "evolve returns an induced function that satisfies a fitness measure" []
   (= '(+ (+ (+ 1 1) (+ 1 1)) 
 	 (+ (+ 1 1) (+ 1 1)))
      (evolve {:generations 20 :population-size 30 :max-height 3 
 	      :fitness apply :termination #(= (%) 8) 
-	      :functions ['+] :terminals [1 0]})))
+	      :functions ['+] :parameters []
+	      :terminals [1 0]})))
 
 ;;; do x^2 + y + 1
 ;; (fact "evolve returns an induced function with paramaters that satisfies a fitness measure" []

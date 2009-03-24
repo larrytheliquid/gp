@@ -58,34 +58,35 @@
   ([args tree] (eval `(memoize (fn [~@args] ~tree)))))
 (def to-fn (memoize to-fn))
 
-(defn- fitter [fitness x y]
-  (if (> (fitness (to-fn x)) 
-	 (fitness (to-fn y))) 
+(defn- fitter [fitness parameters x y]
+  (if (> (fitness (to-fn parameters x)) 
+	 (fitness (to-fn parameters y))) 
     x y))
 
-(defn select [fitness individuals]
+(defn select [fitness parameters individuals]
   (let [x (rand-elem individuals)
 	y (rand-elem individuals)]
-    (fitter fitness x y)))
+    (fitter fitness parameters x y)))
 
-(defn fittest [fitness individuals]
-  (reduce #(fitter fitness %1 %2) 
+(defn fittest [fitness parameters individuals]
+  (reduce #(fitter fitness parameters %1 %2) 
 	  individuals))
 
 (defn evolve [{:keys [generations population-size max-height
 		      fitness termination
-		      functions terminals] :as options}]
+		      functions parameters terminals] :as options}]
   (loop [generation 0 
 	 population (replicate-fn population-size
-                      #(initialize functions terminals max-height))
-	 best (fittest fitness population)]
+                      #(initialize functions 
+		         (concat terminals parameters) max-height))
+	 best (fittest fitness parameters population)]
     (when-let [o (:output options)] (o generation best population))
-    (if (or (termination (to-fn best)) 
+    (if (or (termination (to-fn parameters best)) 
 	    (= generation generations))
       (do (shutdown-agents) best)
       (recur (inc generation)	     
 	     (pmap (fn [_] (crossover max-height
-		             (select fitness population)
-			     (select fitness population)))
+		             (select fitness parameters population)
+			     (select fitness parameters population)))
 		   population)
-	     (fittest fitness (conj population best))))))
+	     (fittest fitness parameters (conj population best))))))
