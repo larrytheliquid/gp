@@ -1,3 +1,4 @@
+TODO: Tournament selection
 TODO: initialize needs to take arity into account (make this :params with default empty)
 TODO: to-fn that accepts function arguments
 TODO: atm example
