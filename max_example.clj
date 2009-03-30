@@ -5,5 +5,5 @@
 	 :functions ['+ '*] :parameters [] :terminals [0.5]
 	 :output (fn [g b _] 
 		   (println "Generation: " g) 
-		   (println "Fitness: " (apply (to-fn [] b))) 
+		   (println "Fitness: " ((to-fn [] b))) 
 		   (prn b))})
