@@ -1,4 +1,4 @@
-(ns test.gp (:use gp fact.core fact.output.verbose))
+(ns test.gp (:use gp fact.core fact.output.color))
 
 (fact "initialize returns full tree of specified height" 
   [[height tree]
@@ -120,5 +120,14 @@
 	      :fitness apply :termination #(= (%) 8) 
 	      :functions ['+] :parameters []
 	      :terminals [1 0]})))
+
+(fact "evolve returns an induced function with paramaters that satisfies a fitness measure" []
+  (= '(+ (+ (+ x x) (+ x x)) 
+	 (+ (+ x x) (+ x x)))
+     (evolve {:generations 20 :population-size 30 :max-height 3 
+	      :fitness (fn [i] (i 1 0))
+              :termination #(= (% 1 0) 8) 
+	      :functions ['+] :parameters ['x 'y]
+	      :terminals []})))
 
 (print-results "gp" (verify-facts 'test.gp))

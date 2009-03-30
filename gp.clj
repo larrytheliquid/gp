@@ -53,7 +53,7 @@
       male
       child)))
 
-(defn to-fn [args tree] 
+(defn to-fn [args tree]
   (eval `(memoize (fn [~@args] ~tree))))
 (def to-fn (memoize to-fn))
 
@@ -84,7 +84,7 @@
 	    (= generation generations))
       (do (shutdown-agents) best)
       (recur (inc generation)	     
-	     (pmap (fn [_] (crossover max-height
+	     (map (fn [_] (crossover max-height
 		             (select fitness parameters population)
 			     (select fitness parameters population)))
 		   population)

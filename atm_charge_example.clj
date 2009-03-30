@@ -18,7 +18,7 @@
 ;;    (if (= (individual false false false) false) 1 0)))
 
 (defn fitness [i] 
-  (prn (i))
+  (prn (i true true true))
   8)
 
 (defn termination [individual]
@@ -27,7 +27,7 @@
 (evolve {:generations 500 :population-size 200 :max-height 5
 	 :fitness fitness :termination termination
 	 :functions ['nand 'nor] :terminals [true false]
-	 :paramaters ['statement-printed
+	 :parameters ['statement-printed
 		      'money-withdrawn
 		      'money-deposited]
 	 :output (fn [g b _] (println "Generation: " g) (prn b))})
