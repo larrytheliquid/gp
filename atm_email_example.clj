@@ -1,15 +1,15 @@
-(ns gp.problems.atm.charge (:use gp))
+(ns gp.problems.atm.email (:use gp))
 
 (defn fitness [individual]
   (+ 
-   (if (= (individual false false false)    false) 1 0)
-   (if (= (individual false false true)     false) 1 0)
-   (if (= (individual false true false)     true)  1 0)
-   (if (= (individual false true true)      true)  1 0)
-   (if (= (individual true false false)     true)  1 0)
-   (if (= (individual true false true)      false) 1 0)
-   (if (= (individual true true false)      true)  1 0)
-   (if (= (individual true true true)       true)  1 0)))
+   (if (= (individual false false false)  false) 1 0)
+   (if (= (individual false false true)   true)  1 0)
+   (if (= (individual false true false)   true)  1 0)
+   (if (= (individual false true true)    true)  1 0)
+   (if (= (individual true false false)   false) 1 0)
+   (if (= (individual true false true)    false) 1 0)
+   (if (= (individual true true false)    false) 1 0)
+   (if (= (individual true true true)     false) 1 0)))
 
 (defn termination [individual]
   (= 8 (fitness individual)))
