@@ -6,12 +6,18 @@
 (defn- replicate-fn [n f]
   (take n (repeatedly f)))
 
+;; (list function
+;;        (initialize functions terminals (dec height))
+;;        (initialize functions terminals (dec height)))
+
 (defn initialize [functions terminals height]
   (if (= 0 height)
     (rand-elem terminals)
-    (list (rand-elem functions) 
-       (initialize functions terminals (dec height))
-       (initialize functions terminals (dec height)))))
+    (let [[function arity] (rand-elem functions)]
+      (cons function
+        (take arity
+          (repeatedly
+           #(initialize functions terminals (dec height))))))))
 
 (defn count-nodes [tree]
   (if-let [children (and (seq? tree) (next tree))]

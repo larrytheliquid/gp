@@ -1,13 +1,21 @@
 (ns test.gp (:use gp fact.core fact.output.color))
 
-(fact "initialize returns full tree of specified height" 
+(fact "initialize returns full unary tree of specified height" 
+  [[height tree]
+   {0 true
+    1 '(not true)
+    2 '(not
+	(not true))}]
+  (= tree (initialize [['not 1]] [true] height)))
+
+(fact "initialize returns full binary tree of specified height" 
   [[height tree]
    {0 true
     1 '(nand true true)
     2 '(nand
 	(nand true true)
 	(nand true true))}]
-  (= tree (initialize ['nand] [true] height)))
+  (= tree (initialize [['nand 2]] [true] height)))
 
 (fact "count-nodes returns number of nodes in tree" 
   [[tree result]
@@ -118,7 +126,7 @@
 	 (+ (+ 1 1) (+ 1 1)))
      (evolve {:generations 20 :population-size 30 :max-height 3 
 	      :fitness apply :termination #(= (%) 8) 
-	      :functions ['+] :parameters []
+	      :functions [['+ 2]] :parameters []
 	      :terminals [1 0]})))
 
 (fact "evolve returns an induced function with paramaters that satisfies a fitness measure" []
@@ -127,7 +135,7 @@
      (evolve {:generations 20 :population-size 30 :max-height 3 
 	      :fitness (fn [i] (i 1 0))
               :termination #(= (% 1 0) 8) 
-	      :functions ['+] :parameters ['x 'y]
+	      :functions [['+ 2]] :parameters ['x 'y]
 	      :terminals []})))
 
 (print-results "gp" (verify-facts 'test.gp))

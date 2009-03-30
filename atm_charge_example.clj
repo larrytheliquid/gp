@@ -27,7 +27,7 @@
 
 (evolve {:generations 500 :population-size 200 :max-height 5
 	 :fitness fitness :termination termination
-	 :functions ['nand 'nor] :terminals [true false]
+	 :functions [['nand 2] ['nor 2]] :terminals [true false]
 	 :parameters parameters
 	 :output (fn [g b _]
                    (println "Generation: " g)
